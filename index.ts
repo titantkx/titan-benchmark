@@ -64,7 +64,7 @@ async function main() {
   console.log("=====> Setting up...");
   const workers = await setup(reporter);
 
-  const tasks = producer(config.taskCount, config.taskInterval);
+  const tasks = producer(config.taskCount, config.tps, config.taskInterval);
 
   console.log("=====> Running...");
   reporter.start();

@@ -1,8 +1,9 @@
 import * as Joi from "joi";
 
 const configValidationSchema = Joi.object({
+  TPS: Joi.number(),
   TASK_COUNT: Joi.number().required().positive(),
-  TASK_INTERVAL: Joi.number().required(),
+  TASK_INTERVAL: Joi.number(),
   WORKER_COUNT: Joi.number().required().positive(),
   WINDOW_SIZE: Joi.number().required().positive(),
   RPC_URL: Joi.string()
@@ -21,8 +22,9 @@ const configValidationSchema = Joi.object({
 });
 
 export interface Config {
+  tps?: number;
   taskCount: number;
-  taskInterval: number;
+  taskInterval?: number;
   workerCount: number;
   windowSize: number;
 
@@ -45,6 +47,7 @@ export function loadConfig(conf: any) {
     throw error;
   }
   config = {
+    tps: value.TPS,
     taskCount: value.TASK_COUNT,
     taskInterval: value.TASK_INTERVAL,
     workerCount: value.WORKER_COUNT,
