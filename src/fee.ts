@@ -18,17 +18,11 @@ export async function updateGasPrice() {
   );
 
   const price = new BigNumber(data.base_fee).multipliedBy(config.gasAdjustment);
+  const priceAmount = price.isGreaterThan(config.gasPriceLimit)
+    ? config.gasPriceLimit
+    : price.toFormat(0, BigNumber.ROUND_UP, { decimalSeparator: "" });
 
-  if (price.isGreaterThan(config.gasPriceLimit)) {
-    throw new Error(
-      "Gas price is too high! Raise GAS_PRICE_LIMIT or wait for it to drop."
-    );
-  }
-
-  gasPrice = GasPrice.fromString(
-    price.toFormat(0, BigNumber.ROUND_UP, { decimalSeparator: "" }) +
-      config.baseDenom
-  );
+  gasPrice = GasPrice.fromString(priceAmount + config.baseDenom);
 
   console.log(`Gas price: ${gasPrice.toString()}`);
 }

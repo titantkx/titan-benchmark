@@ -31,8 +31,11 @@ function updateGasPriceAsync() {
   const terminateSignal = { done: false };
   (async () => {
     while (!terminateSignal.done) {
-      await delay(1000);
-      await updateGasPrice();
+      try {
+        await Promise.all([delay(3000), updateGasPrice()]);
+      } catch (e) {
+        console.log(e);
+      }
     }
   })();
   return terminateSignal;
