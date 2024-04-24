@@ -11,7 +11,9 @@ export abstract class BaseWorker {
     for await (let _task of tasks) {
       try {
         const st = new Date().getTime();
+        this.reporter.concurrency++;
         await this.runTask();
+        this.reporter.concurrency--;
         const et = new Date().getTime();
         this.reporter.addSuccess(et - st);
       } catch (e) {

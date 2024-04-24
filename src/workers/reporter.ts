@@ -1,4 +1,5 @@
 export class Reporter {
+  concurrency: number = 0;
   minLatency: number = 0;
   maxLatency: number = 0;
   totalLatency: number = 0;
@@ -33,6 +34,7 @@ export class Reporter {
     const successRate = `${(this.successRate * 100).toFixed(2)}%`;
     return {
       tps: this.tps,
+      concurrency: this.concurrency,
       duration: `${this.duration}ms`,
       success: `${this.successCount}/${this.totalCount} (${successRate})`,
       avgLatency: `${this.avgLatency}ms`,
