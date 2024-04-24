@@ -1,0 +1,26 @@
+{
+  "name": "titan-ben",
+  "version": "1.0.0",
+  "description": "Titan chain benchmark",
+  "scripts": {
+    "build": "npx tsc",
+    "start": "npm run build && node dist/index.js"
+  },
+  "keywords": [],
+  "author": "hugjobk@gmail.com",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "@titan-cosmjs/cosmwasm-stargate": "^0.32.12",
+    "@titan-cosmjs/crypto": "^0.32.12",
+    "@titan-cosmjs/proto-signing": "^0.32.12",
+    "@titan-cosmjs/stargate": "^0.32.12",
+    "@titan-cosmjs/tendermint-rpc": "^0.32.12",
+    "bignumber.js": "^9.1.2",
+    "dotenv": "^16.4.5",
+    "joi": "^17.13.0",
+    "titan-cosmjs-types": "^0.10.0"
+  }
+}
