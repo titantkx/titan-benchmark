@@ -32,6 +32,9 @@ dependencies:
   joi:
     specifier: ^17.13.0
     version: 17.13.0
+  queue-typescript:
+    specifier: ^1.0.1
+    version: 1.0.1
   titan-cosmjs-types:
     specifier: ^0.10.0
     version: 0.10.0
@@ -478,6 +481,10 @@ packages:
       libsodium-sumo: 0.7.13
     dev: false
 
+  /linked-list-typescript@1.0.15:
+    resolution: {integrity: sha512-RIyUu9lnJIyIaMe63O7/aFv/T2v3KsMFuXMBbUQCHX+cgtGro86ETDj5ed0a8gQL2+DFjzYYsgVG4I36/cUwgw==}
+    dev: false
+
   /long@4.0.0:
     resolution: {integrity: sha512-XsP+KhQif4bjX1kbuSiySJFNAehNxgLb6hPRGJ9QsUr8ajHkuXGdrHmFUTUUXhDwVX2R5bY4JNZEwbUiMhV+MA==}
     dev: false
@@ -533,6 +540,12 @@ packages:
 
   /proxy-from-env@1.1.0:
     resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
+    dev: false
+
+  /queue-typescript@1.0.1:
+    resolution: {integrity: sha512-tkK08uPfmpPl0cX1WRSU3EoNb/T5zSoZPGkkpfGX4E8QayWvEmLS2cI3pFngNPkNTCU5pCDQ1IwlzN0L5gdFPg==}
+    dependencies:
+      linked-list-typescript: 1.0.15
     dev: false
 
   /readonly-date@1.0.0:

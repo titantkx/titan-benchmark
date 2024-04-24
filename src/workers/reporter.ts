@@ -1,3 +1,6 @@
+import { config } from "../config";
+import { TPSCalculator } from "../tps";
+
 export class Reporter {
   concurrency: number = 0;
   minLatency: number = 0;
@@ -7,6 +10,8 @@ export class Reporter {
   successCount: number = 0;
   st: number = 0;
   et: number = 0;
+
+  private readonly tpsCalculator = new TPSCalculator(config.windowSize);
 
   get avgLatency() {
     return this.successCount ? this.totalLatency / this.successCount : 0;
@@ -20,7 +25,7 @@ export class Reporter {
     return this.et ? this.et - this.st : 0;
   }
 
-  get tps() {
+  get avgTps() {
     return this.duration
       ? Math.round((1000 * this.totalCount) / this.duration)
       : 0;
@@ -33,7 +38,8 @@ export class Reporter {
   get report() {
     const successRate = `${(this.successRate * 100).toFixed(2)}%`;
     return {
-      tps: this.tps,
+      tps: this.tpsCalculator.calculateTPS(),
+      avgTps: this.avgTps,
       concurrency: this.concurrency,
       duration: `${this.duration}ms`,
       success: `${this.successCount}/${this.totalCount} (${successRate})`,
@@ -48,12 +54,12 @@ export class Reporter {
   }
 
   addError() {
-    this.et = new Date().getTime();
+    this.addEvent(new Date().getTime());
     this.errorCount++;
   }
 
   addSuccess(latency: number) {
-    this.et = new Date().getTime();
+    this.addEvent(new Date().getTime());
     if (!this.minLatency || latency < this.minLatency) {
       this.minLatency = latency;
     }
@@ -62,5 +68,10 @@ export class Reporter {
     }
     this.totalLatency += latency;
     this.successCount++;
+  }
+
+  private addEvent(timestamp: number) {
+    this.et = timestamp;
+    this.tpsCalculator.addEvent(timestamp);
   }
 }
