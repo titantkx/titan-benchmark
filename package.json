@@ -19,6 +19,7 @@
     "@titan-cosmjs/proto-signing": "^0.32.12",
     "@titan-cosmjs/stargate": "^0.32.12",
     "@titan-cosmjs/tendermint-rpc": "^0.32.12",
+    "axios": "^1.6.8",
     "bignumber.js": "^9.1.2",
     "dotenv": "^16.4.5",
     "joi": "^17.13.0",

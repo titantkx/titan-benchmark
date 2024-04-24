@@ -2,6 +2,7 @@ import * as dotenv from "dotenv";
 import { parseCoins } from "./src/coins";
 import { config, loadConfig } from "./src/config";
 import { acquireTokens, initFaucet } from "./src/faucet";
+import { updateGasPrice } from "./src/fee";
 import { producer } from "./src/producer";
 import { createSigner } from "./src/signer";
 import { delay } from "./src/utils";
@@ -20,22 +21,52 @@ export async function setup(reporter: Reporter) {
     workerAddresses.push(worker.getAddress());
   }
 
+  console.log("=====> Funding...");
   await acquireTokens(parseCoins("10tkx"), ...workerAddresses);
 
   return workers;
 }
 
+function updateGasPriceAsync() {
+  const terminateSignal = { done: false };
+  (async () => {
+    while (!terminateSignal.done) {
+      await delay(1000);
+      await updateGasPrice();
+    }
+  })();
+  return terminateSignal;
+}
+
+function reportAsync(reporter: Reporter) {
+  const terminateSignal = { done: false };
+  (async () => {
+    while (!terminateSignal.done) {
+      await delay(1000);
+      console.log(reporter.report);
+    }
+    console.log(reporter.report);
+  })();
+  return terminateSignal;
+}
+
 async function main() {
   dotenv.config();
   loadConfig(process.env);
+
+  await updateGasPrice();
   await initFaucet();
+
+  const updateGasPriceTask = updateGasPriceAsync();
 
   const reporter = new Reporter();
 
+  console.log("=====> Setting up...");
   const workers = await setup(reporter);
 
   const tasks = producer(config.taskCount, config.taskInterval);
 
+  console.log("=====> Running...");
   reporter.start();
 
   let works: Promise<void>[] = [];
@@ -44,18 +75,13 @@ async function main() {
     works.push(work);
   }
 
-  let done = false;
-
-  (async () => {
-    while (!done) {
-      await delay(1000);
-      console.log(reporter.report);
-    }
-    console.log(reporter.report);
-  })();
+  const reportTask = reportAsync(reporter);
 
   await Promise.all(works);
-  done = true;
+
+  reportTask.done = true;
+
+  console.log("=====> Finishing...");
 
   works = [];
   for (let worker of workers) {
@@ -64,6 +90,10 @@ async function main() {
   }
 
   await Promise.all(works);
+
+  updateGasPriceTask.done = true;
+
+  console.log("=====> All done!");
 }
 
 main();

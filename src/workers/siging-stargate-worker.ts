@@ -4,6 +4,7 @@ import { SigningStargateClient } from "@titan-cosmjs/stargate";
 import BigNumber from "bignumber.js";
 import { config } from "../config";
 import { faucetAddress } from "../faucet";
+import { getGasPrice } from "../fee";
 import { getSignerAddress } from "../signer";
 import { BaseWorker } from "./worker";
 
@@ -27,7 +28,7 @@ export abstract class SigningStargateWorker extends BaseWorker {
         this.address,
         faucetAddress,
         [{ denom: "atkx", amount: sendAmount }],
-        "auto"
+        { gas: config.gasAdjustment, gasPrice: await getGasPrice() }
       );
     }
     this.client.disconnect();
@@ -38,10 +39,7 @@ export abstract class SigningStargateWorker extends BaseWorker {
     this.client = await SigningStargateClient.connectWithSigner(
       endpoint,
       signer,
-      {
-        isEthermint: true,
-        gasPrice: config.gasPrice,
-      }
+      { isEthermint: true }
     );
   }
 }

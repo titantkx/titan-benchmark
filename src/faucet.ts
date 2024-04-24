@@ -6,6 +6,7 @@ import {
 } from "@titan-cosmjs/stargate";
 import { MsgSend } from "titan-cosmjs-types/cosmos/bank/v1beta1/tx";
 import { config } from "./config";
+import { getGasPrice } from "./fee";
 import { createSigner, getSignerAddress } from "./signer";
 
 export let faucetAddress: string;
@@ -17,10 +18,7 @@ export async function initFaucet() {
   faucetClient = await SigningStargateClient.connectWithSigner(
     config.rpcUrl,
     faucetSigner,
-    {
-      isEthermint: true,
-      gasPrice: config.gasPrice,
-    }
+    { isEthermint: true }
   );
 }
 
@@ -38,6 +36,9 @@ export async function acquireTokens(coins: Coin[], ...recipients: string[]) {
       };
       msgs.push(msg);
     }
-    await faucetClient.signAndBroadcast(faucetAddress, msgs, "auto");
+    await faucetClient.signAndBroadcast(faucetAddress, msgs, {
+      gas: config.gasAdjustment,
+      gasPrice: await getGasPrice(),
+    });
   }
 }
