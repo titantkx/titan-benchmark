@@ -14,7 +14,9 @@ export class Reporter {
   private readonly tpsCalculator = new TPSCalculator(config.windowSize);
 
   get avgLatency() {
-    return this.successCount ? this.totalLatency / this.successCount : 0;
+    return this.successCount
+      ? Math.round(this.totalLatency / this.successCount)
+      : 0;
   }
 
   get totalCount() {
@@ -36,7 +38,7 @@ export class Reporter {
   }
 
   get report() {
-    const successRate = `${(this.successRate * 100).toFixed(2)}%`;
+    const successRate = `${(100 * this.successRate).toFixed(2)}%`;
     return {
       tps: this.tpsCalculator.calculateTPS(),
       avgTps: this.avgTps,
