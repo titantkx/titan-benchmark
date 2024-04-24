@@ -13,12 +13,13 @@ export abstract class BaseWorker {
         const st = new Date().getTime();
         this.reporter.concurrency++;
         await this.runTask();
-        this.reporter.concurrency--;
         const et = new Date().getTime();
         this.reporter.addSuccess(et - st);
       } catch (e) {
         this.reporter.addError();
         console.log(e);
+      } finally {
+        this.reporter.concurrency--;
       }
     }
   }
