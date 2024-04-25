@@ -27,7 +27,7 @@ export abstract class SigningStargateWorker extends BaseWorker {
       await this.client.sendTokens(
         this.address,
         faucetAddress,
-        [{ denom: "atkx", amount: sendAmount }],
+        [{ denom: config.baseDenom, amount: sendAmount }],
         { gas: config.gasAdjustment, gasPrice: await getGasPrice() }
       );
     }

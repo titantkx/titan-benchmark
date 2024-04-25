@@ -1,4 +1,6 @@
+import { Coin } from "@titan-cosmjs/stargate";
 import * as Joi from "joi";
+import { parseCoins } from "./coins";
 
 const configValidationSchema = Joi.object({
   TPS: Joi.number(),
@@ -12,6 +14,7 @@ const configValidationSchema = Joi.object({
   LCD_URL: Joi.string()
     .required()
     .uri({ scheme: ["http", "https"] }),
+  FUND: Joi.string().required(),
   BASE_DENOM: Joi.string().required(),
   GAS_ADJUSTMENT: Joi.number().required().positive(),
   GAS_PRICE_ADJUSTMENT: Joi.number().required().positive(),
@@ -31,6 +34,7 @@ export interface Config {
   rpcUrl: string;
   lcdUrl: string;
 
+  fund: Coin[];
   baseDenom: string;
   gasAdjustment: number;
   gasPriceAdjustment: number;
@@ -54,6 +58,7 @@ export function loadConfig(conf: any) {
     windowSize: value.WINDOW_SIZE,
     rpcUrl: value.RPC_URL.trimEnd("/"),
     lcdUrl: value.LCD_URL.trimEnd("/"),
+    fund: parseCoins(value.FUND),
     baseDenom: value.BASE_DENOM,
     gasAdjustment: value.GAS_ADJUSTMENT,
     gasPriceAdjustment: value.GAS_PRICE_ADJUSTMENT,

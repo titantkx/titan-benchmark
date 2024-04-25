@@ -1,5 +1,4 @@
 import * as dotenv from "dotenv";
-import { parseCoins } from "./src/coins";
 import { config, loadConfig } from "./src/config";
 import { acquireTokens, initFaucet } from "./src/faucet";
 import { updateGasPrice } from "./src/fee";
@@ -22,7 +21,7 @@ export async function setup(reporter: Reporter) {
   }
 
   console.log("=====> Funding...");
-  await acquireTokens(parseCoins("10tkx"), ...workerAddresses);
+  await acquireTokens(config.fund, ...workerAddresses);
 
   return workers;
 }
