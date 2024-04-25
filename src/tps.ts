@@ -5,9 +5,8 @@ export class TPSCalculator {
 
   constructor(private readonly windowSize: number) {}
 
-  addEvent(timestamp: number) {
+  addEvent(timestamp = new Date().getTime()) {
     this.window.enqueue(timestamp);
-    this.flush();
   }
 
   calculateTPS() {
@@ -20,7 +19,7 @@ export class TPSCalculator {
     );
   }
 
-  private flush() {
+  flush() {
     const timestamp = new Date().getTime() - this.windowSize;
     while (this.window.front && this.window.front < timestamp) {
       this.window.dequeue();
