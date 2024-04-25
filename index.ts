@@ -35,6 +35,7 @@ function updateGasPriceAsync() {
         await Promise.all([delay(3000), updateGasPrice()]);
       } catch (e) {
         console.log(e);
+        await delay(3000);
       }
     }
   })();
