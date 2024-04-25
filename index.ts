@@ -4,7 +4,7 @@ import { config, loadConfig } from "./src/config";
 import { acquireTokens, initFaucet } from "./src/faucet";
 import { updateGasPrice } from "./src/fee";
 import { producer } from "./src/producer";
-import { createSigner } from "./src/signer";
+import { getSigner } from "./src/signer";
 import { delay } from "./src/utils";
 import { Reporter } from "./src/workers/reporter";
 import { SendTokensWorker } from "./src/workers/send-tokens-worker";
@@ -16,7 +16,7 @@ export async function setup(reporter: Reporter) {
 
   for (let i = 0; i < config.workerCount; i++) {
     const worker = new SendTokensWorker(reporter);
-    await worker.connectWithSigner(config.rpcUrl, await createSigner());
+    await worker.connectWithSigner(config.rpcUrl, await getSigner());
     workers.push(worker);
     workerAddresses.push(worker.getAddress());
   }
@@ -68,7 +68,12 @@ async function main() {
   console.log("=====> Setting up...");
   const workers = await setup(reporter);
 
-  const tasks = producer(config.taskCount, config.tps, config.taskInterval, config.windowSize);
+  const tasks = producer(
+    config.taskCount,
+    config.tps,
+    config.taskInterval,
+    config.windowSize
+  );
 
   console.log("=====> Running...");
   reporter.start();

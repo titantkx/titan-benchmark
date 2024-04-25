@@ -19,10 +19,14 @@
     "@titan-cosmjs/proto-signing": "^0.32.12",
     "@titan-cosmjs/stargate": "^0.32.12",
     "@titan-cosmjs/tendermint-rpc": "^0.32.12",
+    "async-mutex": "^0.5.0",
     "axios": "^1.6.8",
     "bignumber.js": "^9.1.2",
     "dotenv": "^16.4.5",
+    "install": "^0.13.0",
     "joi": "^17.13.0",
+    "nedb-promises": "^6.2.3",
+    "npm": "^10.5.2",
     "queue-typescript": "^1.0.1",
     "titan-cosmjs-types": "^0.10.0"
   }
