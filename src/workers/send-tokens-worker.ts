@@ -1,5 +1,5 @@
 import { isDeliverTxFailure } from "@titan-cosmjs/stargate";
-import { parseCoins } from "../coins";
+import { baseCoin } from "../coins";
 import { config } from "../config";
 import { faucetAddress } from "../faucet";
 import { getGasPrice } from "../fee";
@@ -10,7 +10,7 @@ export class SendTokensWorker extends SigningStargateWorker {
     const resp = await this.client.sendTokens(
       this.address,
       faucetAddress,
-      parseCoins("1atkx"),
+      [baseCoin(1)],
       { gas: config.gasAdjustment, gasPrice: await getGasPrice() }
     );
 

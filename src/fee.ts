@@ -17,10 +17,10 @@ export async function updateGasPrice() {
     `${config.lcdUrl}/ethermint/evm/v1/base_fee`
   );
 
-  const price = new BigNumber(data.base_fee).multipliedBy(config.gasAdjustment);
+  const price = BigNumber(data.base_fee).multipliedBy(config.gasAdjustment);
   const priceAmount = price.isGreaterThan(config.gasPriceLimit)
     ? config.gasPriceLimit
-    : price.toFormat(0, BigNumber.ROUND_UP, { decimalSeparator: "" });
+    : price.toIntString();
 
   gasPrice = GasPrice.fromString(priceAmount + config.baseDenom);
 

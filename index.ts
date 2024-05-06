@@ -1,4 +1,5 @@
 import * as dotenv from "dotenv";
+import "./src/bignumber.extension";
 import { config, loadConfig } from "./src/config";
 import { acquireTokens, initFaucet } from "./src/faucet";
 import { updateGasPrice } from "./src/fee";
